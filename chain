@@ -1,0 +1,6 @@
+#!/bin/bash
+
+riff service invoke correlator /numbers --json -- \
+  -H "knative-blocking-request:true" -v \
+  -w '\n' \
+  -d 7

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+riff function create square \
+  --git-repo https://github.com/projectriff-samples/node-square \
+  --artifact square.js \
+  --image gcr.io/$GCP_PROJECT/square-s2
+
+riff function create greet \
+  --git-repo https://github.com/projectriff-samples/command-hello \
+  --artifact greet.sh \
+  --image gcr.io/$GCP_PROJECT/greet-s2
+
+riff service create correlator --image gcr.io/$GCP_PROJECT/correlator-s2:1.0
+
+riff channel create numbers --cluster-bus stub
+riff channel create squares --cluster-bus stub
+riff channel create replies --cluster-bus stub
+
+riff subscription create --channel numbers --subscriber square --reply-to squares
+riff subscription create --channel squares --subscriber greet --reply-to replies
+riff subscription create --channel replies --subscriber correlator

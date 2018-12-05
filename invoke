@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "invoking greet..."
+riff service invoke greet --text -- -w '\n' -d SkyScanner
+
+echo ""
+echo "invoking square..."
+riff service invoke square --json -- -w '\n' -d 11
